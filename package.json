@@ -1,0 +1,44 @@
+{
+	"name": "skoolsync",
+	"version": "1.0.0",
+	"description": "Tertiary Institution Management System Backend API",
+	"main": "src/server.ts",
+	"scripts": {
+		"build": "tsc",
+		"test": "jest --config jest.config.ts --detectOpenHandles --coverage --maxWorkers=1",
+		"server": "nodemon",
+		"start": "node ./dist/src/server.js"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@types/bcrypt": "^5.0.2",
+		"@types/jsonwebtoken": "^9.0.6",
+		"@types/mongoose": "^5.11.97",
+		"@types/node-cron": "^3.0.11",
+		"bcrypt": "^5.1.1",
+		"dotenv": "^16.4.5",
+		"express": "^4.19.2",
+		"joi": "^17.13.3",
+		"jsonwebtoken": "^9.0.2",
+		"mongoose": "^8.5.2",
+		"mysql2": "^3.14.2",
+		"node-cron": "^3.0.3",
+		"nodemailer": "^6.9.14",
+		"sequelize": "^6.37.7"
+	},
+	"devDependencies": {
+		"@types/express": "^4.17.21",
+		"@types/jest": "^29.5.12",
+		"@types/joi": "^17.2.3",
+		"@types/node": "^22.2.0",
+		"@types/nodemailer": "^6.4.15",
+		"@types/supertest": "^6.0.2",
+		"jest": "^29.7.0",
+		"nodemon": "^3.1.4",
+		"supertest": "^7.0.0",
+		"ts-jest": "^29.2.4",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.5.4"
+	}
+}
