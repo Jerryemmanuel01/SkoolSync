@@ -9,6 +9,8 @@ import { calculateExpiryTime, generateVerificationCode, VERIFICATION_CODE_LENGTH
 import { getEmailTemplates } from '../../helpers/emailContents';
 import { cleanupTokensAfterFailedEmailMessage } from '../../helpers/cleanUpExpiredUser';
 import { TokenSchema } from '../../models';
+import { IToken } from '../../interfaces/IToken';
+import { Op } from 'sequelize';
 
 export const register_user = async (params: IParams<IUser>) => {
 	try {
@@ -56,7 +58,7 @@ export const register_user = async (params: IParams<IUser>) => {
 		return {
 			success: true,
 			message: 'User registered successfully. Please verify your email using the code sent to your email.',
-			data: { _id: newUser.id, email: newUser.email }
+			data: { id: newUser.id, email: newUser.email }
 		};
 	} catch (error: any) {
 		throw new Error(`${error.message}`);
@@ -102,5 +104,55 @@ export const login_user = async (params: IParams<IUser>) => {
 		};
 	} catch (error: any) {
 		throw new Error(`${error.message}`);
+	}
+};
+
+export const verify_email = async (params: { data: IToken; query: { userId: string } }) => {
+	try {
+		const userAuthInfo = params.data;
+		const { userId } = params.query;
+		const now = new Date();
+
+		const user = await User.findByPk(userId);
+
+		if (!user) {
+			throw new Error('User not found.');
+		}
+		const fetchUserToken = await authTokenModel.findOne({ where: { userId: user.id, expiresAt: { [Op.lt]: now } } });
+		const tokenData = fetchUserToken?.get();
+		if (!tokenData || !tokenData.authCode) {
+			throw new Error('Verification token not found.');
+		}
+		const isMatch = userAuthInfo.authCode && (await bcrypt.compare(userAuthInfo.authCode, tokenData.authCode));
+
+		if (!isMatch) {
+			throw new Error('Invalid verification code.');
+		}
+
+		const updateUser = await user.update({ isEmailVerified: true });
+
+		if (!updateUser) {
+			throw new Error('Error updating user! Please try again later.');
+		}
+
+		// Cleanup tokens after successful verification
+		await authTokenModel.destroy({ where: { userId: user.id } });
+
+		const emailContent = getEmailTemplates.successfulVerification({
+			loginUrl: 'https://skoolsync.com'
+		});
+		await sendMail({
+			email: updateUser.email,
+			subject: 'Verify Your Email',
+			text: emailContent
+		});
+
+		return {
+			success: true,
+			message: 'Email successfully verified',
+			data: null
+		};
+	} catch (error: any) {
+		throw new Error(`Error verifying user token: ${error.message}`);
 	}
 };

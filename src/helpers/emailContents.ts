@@ -87,7 +87,7 @@ export const getEmailTemplates = {
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Change Request - Handyman</title>
+    <title>Email Change Request - SkoolSync</title>
     <style>
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -139,11 +139,11 @@ export const getEmailTemplates = {
   <body>
     <div class="container">
       <div class="header">
-        <div class="logo">Handyman</div>
+        <div class="logo">SkoolSync</div>
       </div>
       <div class="content">
         <h2>Email Change Request</h2>
-        <p>We received a request to change the email address associated with your Handyman account. To verify this change, please use the following verification code:</p>
+        <p>We received a request to change the email address associated with your SkoolSync account. To verify this change, please use the following verification code:</p>
         <div class="verification-code">${verificationCode}</div>
         <p>This code will expire in 10 minutes.</p>
         <p><strong>Important:</strong> If you didn't request this email change, please secure your account immediately by:</p>
@@ -153,7 +153,7 @@ export const getEmailTemplates = {
         </ul>
       </div>
       <div class="footer">
-        <p>© ${new Date().getFullYear()} Handyman. All rights reserved.</p>
+        <p>© ${new Date().getFullYear()} SkoolSync. All rights reserved.</p>
       </div>
     </div>
   </body>
@@ -164,7 +164,7 @@ export const getEmailTemplates = {
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Change Confirmation - Handyman</title>
+    <title>Email Change Confirmation - SkoolSync</title>
     <style>
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -212,7 +212,7 @@ export const getEmailTemplates = {
   <body>
     <div class="container">
       <div class="header">
-        <div class="logo">Handyman</div>
+        <div class="logo">SkoolSync</div>
       </div>
       <div class="content">
         <h2>Email Change Successful</h2>
@@ -221,7 +221,7 @@ export const getEmailTemplates = {
         <div class="security-tips">
           <h3>Security Tips to Keep Your Account Safe</h3>
           <ul>
-            <li>Use a strong, unique password for your Handyman account</li>
+            <li>Use a strong, unique password for your SkoolSync account</li>
             
             <li>Never share your login credentials with anyone</li>
             <li>Sign out when using shared devices</li>
@@ -232,7 +232,7 @@ export const getEmailTemplates = {
         <p>If you didn't make this change, please contact our support team immediately.</p>
       </div>
       <div class="footer">
-        <p>© ${new Date().getFullYear()} Handyman. All rights reserved.</p>
+        <p>© ${new Date().getFullYear()} SkoolSync. All rights reserved.</p>
       </div>
     </div>
   </body>
@@ -244,7 +244,7 @@ export const getEmailTemplates = {
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Welcome to Handyman!</title>
+        <title>Welcome to SkoolSync!</title>
         <style>
           body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -302,12 +302,12 @@ export const getEmailTemplates = {
       <body>
         <div class="container">
           <div class="header">
-            <div class="logo">Handyman</div>
+            <div class="logo">SkoolSync</div>
           </div>
           <div class="content">
             <h2>Welcome aboard! 🎉</h2>
             <div class="success-icon">✓</div>
-            <p>Your email has been successfully verified. You can now access all features of Handyman.</p>
+            <p>Your email has been successfully verified. You can now access all features of SkoolSync.</p>
             ${
 				loginUrl
 					? `
@@ -317,10 +317,10 @@ export const getEmailTemplates = {
             `
 					: ''
 			}
-            <p>Thank you for choosing Handyman. We're excited to have you with us!</p>
+            <p>Thank you for choosing SkoolSync. We're excited to have you with us!</p>
           </div>
           <div class="footer">
-            <p>© ${new Date().getFullYear()} Handyman. All rights reserved.</p>
+            <p>© ${new Date().getFullYear()} SkoolSync. All rights reserved.</p>
           </div>
         </div>
       </body>
@@ -333,7 +333,7 @@ export const getEmailTemplates = {
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Reset Your Handyman Password</title>
+        <title>Reset Your SkoolSync Password</title>
         <style>
           body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -393,12 +393,12 @@ export const getEmailTemplates = {
       <body>
         <div class="container">
           <div class="header">
-            <div class="logo">Handyman</div>
+            <div class="logo">SkoolSync</div>
           </div>
           <div class="content">
             <h2>Password Reset Request</h2>
             <p>Hello ${fullname || 'there'},</p>
-            <p>We received a request to reset your Handyman account password. To proceed with the password reset, click the button below:</p>
+            <p>We received a request to reset your SkoolSync account password. To proceed with the password reset, click the button below:</p>
             <div style="text-align: center;">
               <a href="${resetPasswordUrl}" class="button">Reset Password</a>
             </div>
@@ -408,7 +408,7 @@ export const getEmailTemplates = {
             <p>This password reset link will expire in 10 minutes for security reasons.</p>
           </div>
           <div class="footer">
-            <p>© ${new Date().getFullYear()} Handyman. All rights reserved.</p>
+            <p>© ${new Date().getFullYear()} SkoolSync. All rights reserved.</p>
           </div>
         </div>
       </body>
@@ -421,7 +421,7 @@ export const getEmailTemplates = {
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Password Successfully Changed - Handyman</title>
+        <title>Password Successfully Changed - SkoolSync</title>
         <style>
           body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -490,19 +490,19 @@ export const getEmailTemplates = {
       <body>
         <div class="container">
           <div class="header">
-            <div class="logo">Handyman</div>
+            <div class="logo">SkoolSync</div>
           </div>
           <div class="content">
             <div class="success-icon">✓</div>
             <h2>Password Successfully Changed</h2>
             <p>Hello ${fullname},</p>
-            <p>Your Handyman account password has been successfully changed. You can now log in with your new password.</p>
+            <p>Your SkoolSync account password has been successfully changed. You can now log in with your new password.</p>
             
             <div class="security-tips">
               <strong>🔒 Important Security Tips:</strong>
               <ul>
-                <li>Never share your password with anyone, including Handyman support staff</li>
-                <li>Use a unique password for your Handyman account</li>
+                <li>Never share your password with anyone, including SkoolSync support staff</li>
+                <li>Use a unique password for your SkoolSync account</li>
                 <li>Sign out when using shared devices</li>
               </ul>
             </div>
@@ -520,7 +520,7 @@ export const getEmailTemplates = {
             <p>If you did not make this change, please contact our support team immediately.</p>
           </div>
           <div class="footer">
-            <p>© ${new Date().getFullYear()} Handyman. All rights reserved.</p>
+            <p>© ${new Date().getFullYear()} SkoolSync. All rights reserved.</p>
           </div>
         </div>
       </body>
@@ -533,7 +533,7 @@ export const getEmailTemplates = {
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Password Changed Successfully - Handyman</title>
+        <title>Password Changed Successfully - SkoolSync</title>
         <style>
           body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -610,11 +610,11 @@ export const getEmailTemplates = {
       <body>
         <div class="container">
           <div class="header">
-            <div class="logo">Handyman</div>
+            <div class="logo">SkoolSync</div>
           </div>
           <div class="content">
             <div class="greeting">Hello ${fullname},</div>
-            <p>The password for your Handyman account has been successfully changed. If you made this change, no further action is required.</p>
+            <p>The password for your SkoolSync account has been successfully changed. If you made this change, no further action is required.</p>
             
             <div class="alert-box">
               <strong>⚠️ Didn't change your password?</strong>
@@ -632,7 +632,7 @@ export const getEmailTemplates = {
                 <li><strong>Create Strong Passwords:</strong> Use a combination of uppercase and lowercase letters, numbers, and special characters</li>
                 <li><strong>Unique Passwords:</strong> Never use the same password across different accounts</li>
                 <li><strong>Regular Updates:</strong> Change your password periodically, especially if you suspect any security breach</li>
-                <li><strong>Keep it Private:</strong> Never share your password with anyone, including Handyman support staff</li>
+                <li><strong>Keep it Private:</strong> Never share your password with anyone, including SkoolSync support staff</li>
                 <li><strong>Password Manager:</strong> Consider using a reliable password manager to securely store your passwords</li>
                 
               </ul>
@@ -643,7 +643,7 @@ export const getEmailTemplates = {
           </div>
           <div class="footer">
             <p>This is an automated message, please do not reply directly to this email.</p>
-            <p>© ${new Date().getFullYear()} Handyman. All rights reserved.</p>
+            <p>© ${new Date().getFullYear()} SkoolSync. All rights reserved.</p>
           </div>
         </div>
       </body>
@@ -656,7 +656,7 @@ export const getEmailTemplates = {
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>New Message from ${fullname} - Handyman</title>
+        <title>New Message from ${fullname} - SkoolSync</title>
         <style>
           body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -709,11 +709,11 @@ export const getEmailTemplates = {
       <body>
         <div class="container">
           <div class="header">
-            <div class="logo">Handyman</div>
+            <div class="logo">SkoolSync</div>
           </div>
           <div class="content">
             <h2>New Message Received</h2>
-            <p>A new message has been sent to the Handyman admin portal.</p>
+            <p>A new message has been sent to the SkoolSync admin portal.</p>
             
             <div class="message-details">
               <h3>${title}</h3>
@@ -728,7 +728,7 @@ export const getEmailTemplates = {
             </div>
           </div>
           <div class="footer">
-            <p>© ${new Date().getFullYear()} Handyman. All rights reserved.</p>
+            <p>© ${new Date().getFullYear()} SkoolSync. All rights reserved.</p>
           </div>
         </div>
       </body>
@@ -740,7 +740,7 @@ export const getEmailTemplates = {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Handyman API Documentation</title>
+    <title>SkoolSync API Documentation</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <style>
         body {
@@ -755,7 +755,7 @@ export const getEmailTemplates = {
 <body class="min-h-screen flex items-center justify-center">
     <div class="text-center">
         <h1 class="text-5xl font-bold mb-4">
-            <span class="teal-accent">Handyman</span> API
+            <span class="teal-accent">SkoolSync</span> API
         </h1>
         <p class="text-xl mb-8">Welcome to the powerful backend service</p>
         <div class="space-x-4">
@@ -765,7 +765,7 @@ export const getEmailTemplates = {
             </a>
         </div>
         <div class="mt-12 text-sm text-gray-500">
-            © 2024 Handyman. All rights reserved.
+            © 2024 SkoolSync. All rights reserved.
         </div>
     </div>
 </body>
