@@ -1,10 +1,27 @@
-import { Schema, model } from 'mongoose';
-import { IToken } from '../interfaces/IToken';
+import { DataTypes } from 'sequelize';
+import { sequelize } from '../config/config';
 
-const tokenSchema = new Schema<IToken>({
-	adminId: { type: Schema.Types.ObjectId, ref: 'Admin' },
-	refreshToken: { type: String, required: true },
-	expiresAt: { type: Date, required: true }
-});
+const TokenSchema = sequelize.define(
+	'Token',
+	{
+		userId: {
+			type: DataTypes.UUID,
+			allowNull: false,
+			defaultValue: DataTypes.UUIDV4,
+			primaryKey: true
+		},
+		refreshToken: {
+			type: DataTypes.STRING,
+			allowNull: false
+		},
+		expiresAt: {
+			type: DataTypes.DATE,
+			allowNull: false
+		}
+	},
+	{
+		timestamps: true
+	}
+);
 
-export default model<IToken>('Token', tokenSchema);
+export default TokenSchema;

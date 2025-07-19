@@ -24,3 +24,14 @@ export const registerValidationSchema = Joi.object({
         'any.only': 'Role must be one of student, teacher, or admin.'
     }),
 });
+
+export const loginValidationSchema = Joi.object({
+    email: Joi.string().email().required().messages({
+        'string.empty': 'Email is required.',
+        'string.email': 'Email must be a valid email address.'
+    }),
+    password: Joi.string().min(8).required().messages({
+        'string.empty': 'Password is required.',
+        'string.min': 'Password must be at least 8 characters long.'
+    }),
+});

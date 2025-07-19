@@ -1,5 +1,5 @@
-import User from '../models/userModel';
-import authTokenModel from '../models/authTokenModel';
+import { User } from '../models';
+import { authTokenModel } from '../models';
 import { Op } from 'sequelize';
 
 // Cleanup expired tokens and delete associated users
