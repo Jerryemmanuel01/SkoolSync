@@ -26,10 +26,15 @@ const verifyAdminRefreshToken = (token: string) => {
 	return jwt.verify(token, process.env.ADMIN_REFRESH_TOKEN_SECRET!);
 };
 
+const  generateResetPasswordToken = (userId: string) => {
+	return jwt.sign({ userId }, process.env.RESET_PASSWORD_TOKEN_SECRET!, { expiresIn: "10m" });
+};
+
 export default {
 	generateAdminTokens,
 	verifyAdminToken,
 	verifyRefreshToken,
 	verifyAdminRefreshToken,
 	generateUserTokens,
+	generateResetPasswordToken
 };

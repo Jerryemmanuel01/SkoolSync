@@ -4,8 +4,8 @@ import {
 	register_user,
 	verify_email,
 	resend_verification_email,
-	logout_user
-	// forgot_password,
+	logout_user,
+	forgot_password,
 	// reset_password,
 	// logout_user,
 	// fetch_user_details,
@@ -17,3 +17,4 @@ export const loginUser = handleRequest(login_user);
 export const verifyEmail = handleRequest(verify_email);
 export const resendVerificationEmail = handleRequest(resend_verification_email);
 export const logoutUser = handleRequest(logout_user);
+export const forgotPassword = handleRequest(forgot_password);

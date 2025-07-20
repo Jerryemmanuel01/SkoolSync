@@ -3,6 +3,7 @@ import { IMessage } from '../interfaces/IMessage';
 interface EmailTemplateProps {
 	verificationCode?: string;
 	fullname?: string;
+	firstName?: string;
 	loginUrl?: string;
 	resetPasswordUrl?: string;
 }
@@ -327,7 +328,7 @@ export const getEmailTemplates = {
     </html>
   `,
 
-	forgotPassword: ({ resetPasswordUrl, fullname }: EmailTemplateProps): string => `
+	forgotPassword: ({ resetPasswordUrl, firstName }: EmailTemplateProps): string => `
     <!DOCTYPE html>
     <html>
       <head>
@@ -397,7 +398,7 @@ export const getEmailTemplates = {
           </div>
           <div class="content">
             <h2>Password Reset Request</h2>
-            <p>Hello ${fullname || 'there'},</p>
+            <p>Hello ${firstName || 'there'},</p>
             <p>We received a request to reset your SkoolSync account password. To proceed with the password reset, click the button below:</p>
             <div style="text-align: center;">
               <a href="${resetPasswordUrl}" class="button">Reset Password</a>

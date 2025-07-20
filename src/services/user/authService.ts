@@ -223,3 +223,44 @@ export const logout_user = async (params: { data: IToken }) => {
 		throw new Error(`Error logging out user: ${error.message}`);
 	}
 };
+
+export const forgot_password = async (params: { data: IUser }) => {
+	const { email } = params.data;
+	const user = await User.findOne({ where: { email } });
+
+	if (!user) {
+		throw new Error('User not found.');
+	}
+	const isTokenExists = await authTokenModel.findOne({ where: { userId: user.id } });
+	if (isTokenExists) {
+		throw new Error('A password reset request is already sent! Please check your email.');
+	}
+
+	try {
+		const resetToken = jwtUtils.generateResetPasswordToken(user.id);
+		const resetPasswordUrl = `https://skoolsync.com/reset-password?token=${resetToken}&userId=${user.id}`;
+		const emailContent = getEmailTemplates.forgotPassword({
+			resetPasswordUrl,
+			firstName: user.firstName
+		});
+		await sendMail({
+			email: user.email,
+			subject: 'Reset Your Password',
+			text: emailContent
+		});
+
+		await authTokenModel.create({
+			userId: user.id,
+			authCode: resetToken,
+			expiresAt: calculateExpiryTime(10) // 10 minutes expiry
+		});
+
+		return {
+			success: true,
+			message: 'Password reset email sent successfully.',
+			data: null
+		};
+	} catch (error: any) {
+		throw new Error(`Error generating reset password token: ${error.message}`);
+	}
+};
