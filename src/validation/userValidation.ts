@@ -41,3 +41,9 @@ export const emailVerificationSchema = Joi.object({
 		'string.empty': 'Verification code is required.'
 	})
 });
+
+export const logoutValidationSchema = Joi.object({
+	refreshToken: Joi.string().required().messages({
+		'string.empty': 'Refresh token is required.'
+	})
+});

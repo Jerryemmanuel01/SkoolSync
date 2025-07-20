@@ -11,7 +11,6 @@ import { cleanupTokensAfterFailedEmailMessage } from '../../helpers/cleanUpExpir
 import { TokenSchema } from '../../models';
 import { IToken } from '../../interfaces/IToken';
 import { Op } from 'sequelize';
-import { log } from 'console';
 
 export const register_user = async (params: IParams<IUser>) => {
 	try {
@@ -115,13 +114,11 @@ export const verify_email = async (params: { data: IToken; query: { userId: stri
 		const now = new Date();
 
 		const user = await User.findByPk(userId);
-		console.log(`User found:`, user?.toJSON());
 
 		if (!user) {
 			throw new Error('User not found.');
 		}
 		const fetchUserToken = await authTokenModel.findOne({ where: { userId: user.id, expiresAt: { [Op.gt]: now } } });
-		console.log(`Fetched user token: ${fetchUserToken} and token.get(): ${fetchUserToken?.get()}`);
 		const tokenData = fetchUserToken?.get();
 		if (!tokenData || !tokenData.authCode) {
 			throw new Error('Verification token not found.');
@@ -199,5 +196,30 @@ export const resend_verification_email = async (params: { query: { userId: strin
 		// Cleanup tokens if email sending fails
 		await cleanupTokensAfterFailedEmailMessage({ id: params.query.userId });
 		throw new Error(`Error resending verification email: ${error.message}`);
+	}
+};
+
+export const logout_user = async (params: { data: IToken }) => {
+	try {
+		const { refreshToken } = params.data;
+
+		// Validate the refresh token
+		if (!refreshToken) {
+			throw new Error('Refresh token is required for logout.');
+		}
+
+		// destroy the token from the database
+		const result = await TokenSchema.destroy({ where: { refreshToken } });
+
+		if (!result) {
+			throw new Error('Failed to log out. Token not found.');
+		}
+		return {
+			success: true,
+			message: 'User logged out successfully.',
+			data: null
+		};
+	} catch (error: any) {
+		throw new Error(`Error logging out user: ${error.message}`);
 	}
 };
