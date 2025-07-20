@@ -1,12 +1,13 @@
 import express from 'express';
-import { forgotPassword, loginUser, logoutUser, registerUser, resendVerificationEmail, verifyEmail } from '../../controllers/authController';
+import { forgotPassword, loginUser, logoutUser, registerUser, resendVerificationEmail, resetPassword, verifyEmail } from '../../controllers/authController';
 import { validateRequest } from '../../middleware/validationHandler';
 import {
 	emailVerificationSchema,
 	forgetPasswordSchema,
 	loginValidationSchema,
 	logoutValidationSchema,
-	registerValidationSchema
+	registerValidationSchema,
+	resetPasswordSchema
 } from '../../validation/userValidation';
 
 export const authRoute = express.Router();
@@ -22,3 +23,5 @@ authRoute.get('/resend-verification/:userId', resendVerificationEmail);
 authRoute.post('/logout', validateRequest(logoutValidationSchema), logoutUser);
 // Route to forgot password
 authRoute.post('/forgot-password', validateRequest(forgetPasswordSchema), forgotPassword);
+// Route to reset password
+authRoute.post('/reset-password', validateRequest(resetPasswordSchema), resetPassword);

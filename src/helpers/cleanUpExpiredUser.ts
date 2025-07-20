@@ -11,9 +11,8 @@ export const cleanupExpiredTokens = async () => {
 		// Parallel deletion for better performance
 		await Promise.all(
 			expiredTokens.map(async (token) => {
-				const { userId, id } = token.get();
-				await User.destroy({ where: { id: userId, isEmailVerified: false } });
-				await authTokenModel.destroy({ where: { id } });
+				const { userId } = token.get();
+				await authTokenModel.destroy({ where: { userId } });
 			})
 		);
 	} catch (error) {

@@ -26,8 +26,19 @@ const verifyAdminRefreshToken = (token: string) => {
 	return jwt.verify(token, process.env.ADMIN_REFRESH_TOKEN_SECRET!);
 };
 
-const  generateResetPasswordToken = (userId: string) => {
-	return jwt.sign({ userId }, process.env.RESET_PASSWORD_TOKEN_SECRET!, { expiresIn: "10m" });
+const generateResetPasswordToken = (userId: string) => {
+	return jwt.sign({ userId }, process.env.RESET_PASSWORD_TOKEN_SECRET!, { expiresIn: '10m' });
+};
+
+const verifyResetPasswordToken = (token: string) => {
+	const secret = process.env.RESET_PASSWORD_TOKEN_SECRET!;
+	if (!secret) {
+		throw new Error('Reset password token secret is not defined.');
+	}
+	
+	const result= jwt.verify(token, secret);
+	console.log('Decoded Token:', result);
+	return result 
 };
 
 export default {
@@ -36,5 +47,6 @@ export default {
 	verifyRefreshToken,
 	verifyAdminRefreshToken,
 	generateUserTokens,
-	generateResetPasswordToken
+	generateResetPasswordToken,
+	verifyResetPasswordToken
 };

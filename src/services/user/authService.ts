@@ -11,6 +11,7 @@ import { cleanupTokensAfterFailedEmailMessage } from '../../helpers/cleanUpExpir
 import { TokenSchema } from '../../models';
 import { IToken } from '../../interfaces/IToken';
 import { Op } from 'sequelize';
+import { JwtPayload } from 'jsonwebtoken';
 
 export const register_user = async (params: IParams<IUser>) => {
 	try {
@@ -233,7 +234,7 @@ export const forgot_password = async (params: { data: IUser }) => {
 	}
 	const isTokenExists = await authTokenModel.findOne({ where: { userId: user.id } });
 	if (isTokenExists) {
-		throw new Error('A password reset request is already sent! Please check your email.');
+		throw new Error('A password reset request is already sent! Please check your email or wait till it expires.');
 	}
 
 	try {
@@ -262,5 +263,46 @@ export const forgot_password = async (params: { data: IUser }) => {
 		};
 	} catch (error: any) {
 		throw new Error(`Error generating reset password token: ${error.message}`);
+	}
+};
+
+export const reset_password = async (params: { data: { password: string; resetToken: string } }) => {
+	const { password, resetToken } = params.data;
+
+	try {
+		const decodedToken = jwtUtils.verifyResetPasswordToken(resetToken) as JwtPayload;
+
+		const user = await User.findByPk(decodedToken.userId);
+		if (!user) {
+			throw new Error('Invalid or expired reset token');
+		}
+
+		const hashedPassword = await bcrypt.hash(password, 10);
+		await user.update({ password: hashedPassword });
+		await user.save();
+
+		// Send confirmation email
+		const emailContent = getEmailTemplates.passwordChangeSuccess({
+			firstName: user.firstName,
+			loginUrl: 'https://skoolsync.com'
+		});
+
+		await sendMail({
+			email: user.email,
+			subject: 'Password Reset Successful',
+			text: emailContent
+		});
+
+		// Cleanup token after successful reset
+		await authTokenModel.destroy({ where: { userId: user.id } });
+
+		return {
+			success: true,
+			message: 'Password reset successfully.',
+			data: null
+		};
+	} catch (error: any) {
+		console.error("error stack: ",error.stack)
+		throw new Error(`Error resetting password: ${error.message}`);
 	}
 };
