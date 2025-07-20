@@ -11,6 +11,7 @@ import { cleanupTokensAfterFailedEmailMessage } from '../../helpers/cleanUpExpir
 import { TokenSchema } from '../../models';
 import { IToken } from '../../interfaces/IToken';
 import { Op } from 'sequelize';
+import { log } from 'console';
 
 export const register_user = async (params: IParams<IUser>) => {
 	try {
@@ -114,11 +115,13 @@ export const verify_email = async (params: { data: IToken; query: { userId: stri
 		const now = new Date();
 
 		const user = await User.findByPk(userId);
+		console.log(`User found:`, user?.toJSON());
 
 		if (!user) {
 			throw new Error('User not found.');
 		}
-		const fetchUserToken = await authTokenModel.findOne({ where: { userId: user.id, expiresAt: { [Op.lt]: now } } });
+		const fetchUserToken = await authTokenModel.findOne({ where: { userId: user.id, expiresAt: { [Op.gt]: now } } });
+		console.log(`Fetched user token: ${fetchUserToken} and token.get(): ${fetchUserToken?.get()}`);
 		const tokenData = fetchUserToken?.get();
 		if (!tokenData || !tokenData.authCode) {
 			throw new Error('Verification token not found.');
@@ -154,5 +157,47 @@ export const verify_email = async (params: { data: IToken; query: { userId: stri
 		};
 	} catch (error: any) {
 		throw new Error(`Error verifying user token: ${error.message}`);
+	}
+};
+
+export const resend_verification_email = async (params: { query: { userId: string } }) => {
+	try {
+		const { userId } = params.query;
+		const user = await User.findByPk(userId);
+		if (!user) {
+			throw new Error('User not found.');
+		}
+		if (user.isEmailVerified) {
+			throw new Error('Email is already verified.');
+		}
+
+		// Cleanup any existing tokens for the user
+		await authTokenModel.destroy({ where: { userId: user.id } });
+
+		// Generate a new verification code and send email
+		const verificationCode = generateVerificationCode(VERIFICATION_CODE_LENGTH);
+		const hashedVerificationCode = await bcrypt.hash(verificationCode, 10);
+		await authTokenModel.create({
+			userId: user.id,
+			authCode: hashedVerificationCode,
+			expiresAt: calculateExpiryTime(VERIFICATION_EXPIRY_MINUTES)
+		});
+		const emailContent = getEmailTemplates.verificationCode({
+			verificationCode
+		});
+		await sendMail({
+			email: user.email,
+			subject: 'Resend Verification Email',
+			text: emailContent
+		});
+		return {
+			success: true,
+			message: 'Verification email resent successfully.',
+			data: null
+		};
+	} catch (error: any) {
+		// Cleanup tokens if email sending fails
+		await cleanupTokensAfterFailedEmailMessage({ id: params.query.userId });
+		throw new Error(`Error resending verification email: ${error.message}`);
 	}
 };

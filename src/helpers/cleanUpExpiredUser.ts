@@ -24,7 +24,6 @@ export const cleanupExpiredTokens = async () => {
 // Cleanup tokens and user after a failed email verification
 export const cleanupTokensAfterFailedEmailMessage = async ({ id }: { id: string }) => {
 	try {
-		await User.destroy({ where: { id, isEmailVerified: false } });
 		await authTokenModel.destroy({ where: { userId: id } });
 	} catch (error) {
 		console.error(`Error during cleanup after failed email for user ${id}:`, error);

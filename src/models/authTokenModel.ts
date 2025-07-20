@@ -5,13 +5,10 @@ import { IToken } from '../interfaces/IToken';
 const authTokenModel = sequelize.define(
 	'AuthToken',
 	{
-		id: {
-			type: DataTypes.UUID,
-			defaultValue: DataTypes.UUIDV4,
-			primaryKey: true
-		},
 		userId: {
 			type: DataTypes.UUID,
+			defaultValue: DataTypes.UUIDV4,
+			primaryKey: true,
 			allowNull: false
 		},
 		authCode: {

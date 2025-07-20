@@ -1,5 +1,5 @@
 import express from 'express';
-import { loginUser, registerUser, verifyEmail } from '../../controllers/authController';
+import { loginUser, registerUser, resendVerificationEmail, verifyEmail } from '../../controllers/authController';
 import { validateRequest } from '../../middleware/validationHandler';
 import { emailVerificationSchema, loginValidationSchema, registerValidationSchema } from '../../validation/userValidation';
 
@@ -10,3 +10,5 @@ authRoute.post('/register', validateRequest(registerValidationSchema), registerU
 authRoute.post('/login', validateRequest(loginValidationSchema), loginUser);
 // Route to verify user email
 authRoute.post('/verify/:userId', validateRequest(emailVerificationSchema), verifyEmail);
+// Route to resend verification email
+authRoute.get('/resend-verification/:userId', resendVerificationEmail); //
