@@ -2,28 +2,17 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import { IAdmin } from '../interfaces/IAdmin';
 import { IUser } from '../interfaces/IUser';
 
+const generateUserTokens = (user: IUser) => {
+	const accessToken = jwt.sign({ id: user.id, email: user.email }, process.env.ACCESS_TOKEN_SECRET!, { expiresIn: '1d' });
+	const refreshToken = jwt.sign({ id: user.id, email: user.email }, process.env.REFRESH_TOKEN_SECRET!, { expiresIn: '30d' });
+	return { accessToken, refreshToken };
+};
+
 const verifyRefreshToken = (token: string) => {
 	return jwt.verify(token, process.env.REFRESH_TOKEN_SECRET!);
 };
-
-const generateUserTokens = (user: IUser) => {
-	const accessToken = jwt.sign({ id: user.id, email: user.email }, process.env.ADMIN_ACCESS_TOKEN_SECRET!, { expiresIn: '1d' });
-	const refreshToken = jwt.sign({ id: user.id, email: user.email }, process.env.ADMIN_REFRESH_TOKEN_SECRET!, { expiresIn: '30d' });
-	return { accessToken, refreshToken };
-};
-
-const generateAdminTokens = (user: IAdmin) => {
-	const accessToken = jwt.sign({ id: user._id }, process.env.ADMIN_ACCESS_TOKEN_SECRET!, { expiresIn: '1d' });
-	const refreshToken = jwt.sign({ id: user._id }, process.env.ADMIN_REFRESH_TOKEN_SECRET!, { expiresIn: '30d' });
-	return { accessToken, refreshToken };
-};
-
-const verifyAdminToken = (token: string) => {
-	return jwt.verify(token, process.env.ADMIN_ACCESS_TOKEN_SECRET!);
-};
-
-const verifyAdminRefreshToken = (token: string) => {
-	return jwt.verify(token, process.env.ADMIN_REFRESH_TOKEN_SECRET!);
+const verifyAccessToken = (token: string) => {
+	return jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!);
 };
 
 const generateResetPasswordToken = (userId: string) => {
@@ -36,17 +25,14 @@ const verifyResetPasswordToken = (token: string) => {
 		throw new Error('Reset password token secret is not defined.');
 	}
 	
-	const result= jwt.verify(token, secret);
-	console.log('Decoded Token:', result);
-	return result 
+	return jwt.verify(token, secret);
+	  
 };
 
 export default {
-	generateAdminTokens,
-	verifyAdminToken,
 	verifyRefreshToken,
-	verifyAdminRefreshToken,
 	generateUserTokens,
 	generateResetPasswordToken,
-	verifyResetPasswordToken
+	verifyResetPasswordToken,
+	verifyAccessToken
 };

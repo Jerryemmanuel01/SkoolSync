@@ -12,6 +12,7 @@ import { TokenSchema } from '../../models';
 import { IToken } from '../../interfaces/IToken';
 import { Op } from 'sequelize';
 import { JwtPayload } from 'jsonwebtoken';
+import { access } from 'fs';
 
 export const register_user = async (params: IParams<IUser>) => {
 	try {
@@ -277,8 +278,7 @@ export const reset_password = async (params: { data: { password: string; resetTo
 			throw new Error('Invalid or expired reset token');
 		}
 
-		const hashedPassword = await bcrypt.hash(password, 10);
-		await user.update({ password: hashedPassword });
+		await user.update({ password });
 		await user.save();
 
 		// Send confirmation email
@@ -302,7 +302,54 @@ export const reset_password = async (params: { data: { password: string; resetTo
 			data: null
 		};
 	} catch (error: any) {
-		console.error("error stack: ",error.stack)
+		console.error('error stack: ', error.stack);
 		throw new Error(`Error resetting password: ${error.message}`);
+	}
+};
+
+export const get_access_token = async (params: { data: IToken }) => {
+	const { refreshToken } = params.data;
+
+	try {
+		const getToken = await TokenSchema.findOne({ where: { refreshToken, expiresAt: { [Op.gt]: new Date() } } });
+		const tokenData = getToken?.get();
+		if (!tokenData) {
+			throw new Error('Invalid or expired refresh token.');
+		}
+
+		const decodedToken = jwtUtils.verifyRefreshToken(refreshToken) as JwtPayload;
+
+		console.log('Decoded Token:', decodedToken);
+		if (!decodedToken || !decodedToken.id) {
+			throw new Error('Invalid refresh token.');
+		}
+
+		const user = await User.findByPk(decodedToken.id);
+		if (!user) {
+			throw new Error('User not found.');
+		}
+
+		const tokens = jwtUtils.generateUserTokens(user as IUser);
+
+		const refreshTokenExpiresIn = 30 * 24 * 60 * 60 * 1000; // 30 days
+		const expiresAt = new Date(Date.now() + refreshTokenExpiresIn);
+
+		// Update or create the refresh token in the databasea
+		if (getToken) {
+			await getToken.update({ refreshToken: tokens.refreshToken, expiresAt });
+		} else {
+			await TokenSchema.create({
+				userId: user.id,
+				refreshToken: tokens.refreshToken,
+				expiresAt
+			});
+		}
+		return {
+			success: true,
+			message: 'Access token generated successfully.',
+			data: { accessToken: tokens.accessToken, refreshToken: tokens.refreshToken }
+		};
+	} catch (error: any) {
+		throw new Error(`Error generating access token: ${error.message}`);
 	}
 };

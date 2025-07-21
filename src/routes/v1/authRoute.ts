@@ -1,9 +1,10 @@
 import express from 'express';
-import { forgotPassword, loginUser, logoutUser, registerUser, resendVerificationEmail, resetPassword, verifyEmail } from '../../controllers/authController';
+import { forgotPassword, getAccessToken, loginUser, logoutUser, registerUser, resendVerificationEmail, resetPassword, verifyEmail } from '../../controllers/authController';
 import { validateRequest } from '../../middleware/validationHandler';
 import {
 	emailVerificationSchema,
 	forgetPasswordSchema,
+	getAccessTokenSchema,
 	loginValidationSchema,
 	logoutValidationSchema,
 	registerValidationSchema,
@@ -25,3 +26,5 @@ authRoute.post('/logout', validateRequest(logoutValidationSchema), logoutUser);
 authRoute.post('/forgot-password', validateRequest(forgetPasswordSchema), forgotPassword);
 // Route to reset password
 authRoute.post('/reset-password', validateRequest(resetPasswordSchema), resetPassword);
+// Route to get access token using refresh token
+authRoute.post('/get-access-token', validateRequest(getAccessTokenSchema), getAccessToken);

@@ -7,6 +7,7 @@ import {
 	logout_user,
 	forgot_password,
 	reset_password,
+	get_access_token
 } from '../services/user/authService';
 
 export const registerUser = handleRequest(register_user);
@@ -16,3 +17,4 @@ export const resendVerificationEmail = handleRequest(resend_verification_email);
 export const logoutUser = handleRequest(logout_user);
 export const forgotPassword = handleRequest(forgot_password);
 export const resetPassword = handleRequest(reset_password);
+export const getAccessToken = handleRequest(get_access_token);

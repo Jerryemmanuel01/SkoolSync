@@ -1,4 +1,3 @@
-import { User } from '../models';
 import { authTokenModel } from '../models';
 import { Op } from 'sequelize';
 
